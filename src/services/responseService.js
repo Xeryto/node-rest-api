@@ -1,23 +1,37 @@
-const { getResponse } = require('../controllers/cachedResponseController');
+const https = require('https');
 const CachedResponse = require("../models/cachedResponseModel");
 
-const loadCachedResponse = async (searchTitle) => {
+const loadCachedResponse = async (searchTitle, apiKey=null) => {
     try {
-        const cachedResponse = CachedResponse.findOne({searchTitle});
+        const cachedResponse = await CachedResponse.findOne({searchTitle});
         if (cachedResponse != null) {
             return JSON.parse(cachedResponse['response']);
         }
         else {
-            fetch(searchTitle, { method: 'GET', headers: newHeaders })
-                .then((results) => {
-                    console.log(results);
-                }).then(async results => {
-                    results = results.json();
-                    await CachedResponse.create({searchTitle, results});
-                    return results;
-            }).catch((err) => { console.error(err) });
+            if (apiKey != null) {
+                searchTitle+=apiKey;
+            }
+            return new Promise((resolve, reject) => {
+                https.get(searchTitle, function(res){
+                    let body = '';
+
+                    res.on('data', function(chunk){
+                        body += chunk;
+                    });
+
+                    res.on('end', async function () {
+                        const fbResponse = JSON.parse(body);
+                        await CachedResponse.create({'title': searchTitle, 'response': fbResponse});
+                        resolve(fbResponse);
+                    });
+                }).on('error', function(e){
+                    reject(e);
+                });
+            });
         }
     } catch (error) {
         console.error(error);
     }
 }
+
+module.exports = { loadCachedResponse };

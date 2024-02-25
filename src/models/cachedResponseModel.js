@@ -8,7 +8,7 @@ const cachedReponseSchema = new mongoose.Schema(
             unique: true
         },
         response: {
-            type: String,
+            type: JSON,
             required: true
         },
         createdAt: {

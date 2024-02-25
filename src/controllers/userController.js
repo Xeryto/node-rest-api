@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 // Register a new user
@@ -7,7 +6,6 @@ const register = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
-        //const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ username, password });
         await user.save();
         res.json({ message: 'Registration successful' });
@@ -21,11 +19,13 @@ const login = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
+        // check if user exists
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // check if passwords match
         const passwordMatch = await user.comparePassword(password);
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Incorrect password' });
@@ -40,6 +40,7 @@ const login = async (req, res, next) => {
     }
 };
 
+// Update username
 const update = async (req, res, next) => {
     const username = req.params.username, newUsername = req.query.username;
 
@@ -49,6 +50,7 @@ const update = async (req, res, next) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // check if it's the owner of the account
         if (username === req.user.username) {
             await User.updateOne({"username": username}, {"username": newUsername});
             res.json({ message: 'Update successful' });
@@ -60,6 +62,7 @@ const update = async (req, res, next) => {
     }
 };
 
+// Delete user account
 const deleteUser = async (req, res, next) => {
     const username = req.params.username;
 
@@ -75,17 +78,6 @@ const deleteUser = async (req, res, next) => {
         } else {
             res.status(401).json({message: 'Users can only delete their own accounts'});
         }
-    } catch (error) {
-        next(error);
-    }
-};
-
-const profile = async (req, res, next) => {
-    const { username } = req.body;
-
-    try {
-        await User.findOne({username});
-        res.json({message: "Welcome, "+username});
     } catch (error) {
         next(error);
     }
