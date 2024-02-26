@@ -4,6 +4,6 @@ const { getHottestStocks } = require('../thirdParty/hotStocks');
 
 const router = express.Router();
 
-router.get('/hottestStocksInfo/', authenticate, getHottestStocks);
+router.get('/hottestStocksInfo', authenticate, getHottestStocks);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
+// Decode received authorization token into user
 const authenticate = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
 

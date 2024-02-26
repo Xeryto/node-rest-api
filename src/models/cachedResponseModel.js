@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cachedReponseSchema = new mongoose.Schema(
+const cachedResponseSchema = new mongoose.Schema(
     {
         title: {
             type: String,
@@ -15,11 +15,11 @@ const cachedReponseSchema = new mongoose.Schema(
             type: Date,
             required: true,
             default: Date.now(),
-            expires: '1h'
+            expires: '1h' // set expiry date for all cached responses to 1 hour
         }
     }
 );
 
-const CachedResponse = mongoose.model('CachedReponse', cachedReponseSchema);
+const CachedResponse = mongoose.model('CachedResponse', cachedResponseSchema);
 
 module.exports = CachedResponse;

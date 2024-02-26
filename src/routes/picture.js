@@ -4,6 +4,6 @@ const { getTodayPicture } = require('../thirdParty/pictureOfDay');
 
 const router = express.Router();
 
-router.get('/pictureOfDay/', authenticate, getTodayPicture);
+router.get('/pictureOfDay', authenticate, getTodayPicture);
 
 module.exports = router;

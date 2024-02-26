@@ -9,6 +9,7 @@ router.get('/profile', authenticate, (req, res) => {
 });
 
 router.post('/delete/:username', authenticate, deleteUser);
+
 router.patch('/update/:username', authenticate, update)
 
 module.exports = router;

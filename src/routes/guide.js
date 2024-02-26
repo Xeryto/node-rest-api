@@ -4,6 +4,6 @@ const { getGuide } = require('../thirdParty/travelGuide');
 
 const router = express.Router();
 
-router.get('/guide/', authenticate, getGuide);
+router.get('/guide', authenticate, getGuide);
 
 module.exports = router;
