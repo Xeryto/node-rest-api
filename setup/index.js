@@ -3,7 +3,7 @@ const connectDB = require('./db');
 const authRoutes = require('../src/routes/auth');
 const userRoutes = require('../src/routes/user');
 const pictureRoute = require('../src/routes/picture');
-//const travelGuideRoutes = require('../src/routes/travelGuide');
+const travelGuideRoutes = require('../src/routes/guide');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +22,7 @@ app.use('/user', userRoutes);
 
 // Define API endpoints
 app.use('/API', pictureRoute);
-//app.use('/travelGuide', travelGuideRoutes);
+app.use('/API', travelGuideRoutes);
 
 // Start the server
 app.listen(PORT, () => {

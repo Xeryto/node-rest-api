@@ -13,14 +13,10 @@ const userSchema = new mongoose.Schema(
             required: true
         },
         pictureID: {
-            type: String,
-            required: true,
-            default: null
+            type: String
         },
         pictureLastUpdate: {
-            type: Date,
-            required: true,
-            default: new Date(Date.now())
+            type: Date
         }
     },
     { timestamps: true }
@@ -42,8 +38,6 @@ userSchema.pre('save', async function (next) {
 
 // Compare the given password with the hashed password in the database
 userSchema.methods.comparePassword = async function (password) {
-    console.log(password);
-    console.log(this.password);
     return bcrypt.compare(password, this.password);
 };
 

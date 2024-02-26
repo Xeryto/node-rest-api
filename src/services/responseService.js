@@ -3,16 +3,17 @@ const CachedResponse = require("../models/cachedResponseModel");
 
 const loadCachedResponse = async (searchTitle, apiKey=null) => {
     try {
-        const cachedResponse = await CachedResponse.findOne({searchTitle});
-        if (cachedResponse != null) {
-            return JSON.parse(cachedResponse['response']);
+        const cachedResponse = await CachedResponse.findOne({'title': searchTitle});
+        if (cachedResponse !== null) {
+            return cachedResponse['response'];
         }
         else {
-            if (apiKey != null) {
-                searchTitle+=apiKey;
+            let url = searchTitle;
+            if (apiKey !== null) {
+                url += apiKey;
             }
             return new Promise((resolve, reject) => {
-                https.get(searchTitle, function(res){
+                https.get(url, function(res){
                     let body = '';
 
                     res.on('data', function(chunk){
@@ -21,16 +22,24 @@ const loadCachedResponse = async (searchTitle, apiKey=null) => {
 
                     res.on('end', async function () {
                         const fbResponse = JSON.parse(body);
-                        await CachedResponse.create({'title': searchTitle, 'response': fbResponse});
-                        resolve(fbResponse);
+                        if (fbResponse.status && fbResponse.status !== 202) {
+                            console.log("rejected");
+                            reject(new Error("The API call did not result in success, status "+fbResponse.status));
+                        }
+                        else {
+                            await CachedResponse.create({'title': searchTitle, 'response': fbResponse});
+                            resolve(fbResponse);
+                        }
                     });
                 }).on('error', function(e){
+                    console.log("here")
                     reject(e);
                 });
             });
         }
     } catch (error) {
         console.error(error);
+        return error;
     }
 }
 
