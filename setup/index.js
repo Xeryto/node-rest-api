@@ -4,6 +4,7 @@ const authRoutes = require('../src/routes/auth');
 const userRoutes = require('../src/routes/user');
 const pictureRoute = require('../src/routes/picture');
 const travelGuideRoutes = require('../src/routes/guide');
+const hotStockRoutes = require('../src/routes/stocks');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use('/user', userRoutes);
 // Define API endpoints
 app.use('/API', pictureRoute);
 app.use('/API', travelGuideRoutes);
+app.use('/API', hotStockRoutes);
 
 // Start the server
 app.listen(PORT, () => {

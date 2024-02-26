@@ -32,7 +32,6 @@ const loadCachedResponse = async (searchTitle, apiKey=null) => {
                         }
                     });
                 }).on('error', function(e){
-                    console.log("here")
                     reject(e);
                 });
             });
