@@ -22,9 +22,8 @@ const loadCachedResponse = async (searchTitle, apiKey=null) => {
 
                 res.on('end', async function () {
                     const fbResponse = JSON.parse(body);
-                    // if there's a status and it's not OK, the API call was unsuccessful
+                    // if there's a status, and it's not OK, the API call was unsuccessful
                     if (fbResponse.status && fbResponse.status !== 200) {
-                        console.log("rejected");
                         reject(new Error("The API call did not result in success, status "+fbResponse.status));
                     }
                     else {

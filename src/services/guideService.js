@@ -4,7 +4,18 @@ const {loadCachedResponse} = require('./responseService');
 const getCountryInfo = async (country, currency) => {
     // try country name first
     if (country !== undefined) {
-        return await loadCachedResponse('https://restcountries.com/v3.1/name/'+country+'?fields=name,nativeName,currencies,borders,flag,maps');
+        try {
+            return await loadCachedResponse('https://restcountries.com/v3.1/name/'+country+'?fields=name,nativeName,currencies,borders,flag,maps');
+        } catch (error) {
+            // if API responded with any status other than 200, there would be an error
+            if (currency !== undefined) {
+                // if currency is provided, try to return with currency
+                currency = currency.toUpperCase();
+                return await loadCachedResponse('https://restcountries.com/v3.1/currency/'+currency+'?fields=name,nativeName,currencies,borders,flag,maps');
+            } else {
+                return error;
+            }
+        }
     } else {
         currency = currency.toUpperCase();
         return await loadCachedResponse('https://restcountries.com/v3.1/currency/'+currency+'?fields=name,nativeName,currencies,borders,flag,maps');
