@@ -7,7 +7,7 @@ const getTopStocks = async () => {
 
 // Get company and stock info by the symbol provided
 const getStockInfo = async (symbol) => {
-    return (await loadCachedResponse('https://financialmodelingprep.com/api/v3/profile/' + symbol + '?apikey=' + process.env.STOCK_API_KEY))[0];
+    return (await loadCachedResponse('https://financialmodelingprep.com/api/v3/profile/' + symbol + '?apikey=',process.env.STOCK_API_KEY))[0];
 };
 
 module.exports = {getTopStocks, getStockInfo};

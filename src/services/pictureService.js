@@ -31,13 +31,12 @@ const getNewRandomPicture = async () => {
 
             res.on('end', async function () {
                 const fbResponse = JSON.parse(body)[0];
-                // if there's a status and it's not OK, the API call was unsuccessful
+                // if there's a status, and it's not OK, the API call was unsuccessful
                 if (fbResponse.status && fbResponse.status !== 200) {
-                    console.log("rejected");
                     reject(new Error("The API call did not result in success, status "+fbResponse.status));
                 }
                 // generate a different title to save, since initial url returns a random picture and not the same response
-                const searchTitle = 'https://api.thedogapi.com/v1/images/'+fbResponse['id']+'?api_key='+process.env.DOG_API_KEY;
+                const searchTitle = 'https://api.thedogapi.com/v1/images/'+fbResponse['id']+'?api_key=';
                 await CachedResponse.create({'title': searchTitle, 'response': fbResponse});
                 resolve(fbResponse);
             });
