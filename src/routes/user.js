@@ -8,7 +8,7 @@ router.get('/profile', authenticate, (req, res) => {
     res.json({ message: `Welcome ${req.user.username}` });
 });
 
-router.post('/delete/:username', authenticate, deleteUser);
+router.delete('/delete/:username', authenticate, deleteUser);
 
 router.patch('/update/:username', authenticate, update)
 
