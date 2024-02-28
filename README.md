@@ -1,4 +1,4 @@
-### Sample Node.js Project ###
+# Sample Node.js Project #
 
 A Node.js project written using Express.
 
